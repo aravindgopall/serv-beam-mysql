@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.2.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 631d1bda28d6f4c48c023543284939a5f9e8b173d7ebf97c7cfac37c51ed7703
+-- hash: 5ae3500d9cb4250652623abed48881cda767392ef78ad35a8bc220e65a1e9638
 
 name:           serv-beam-sql
 version:        0.1.0.0
@@ -36,8 +36,7 @@ library
       aeson
     , base >=4.7 && <5
     , beam-core
-    , beam-mysql
-    , mysql
+    , beam-postgres
     , servant-server
     , text
     , wai
@@ -55,8 +54,7 @@ executable serv-beam-sql-exe
       aeson
     , base >=4.7 && <5
     , beam-core
-    , beam-mysql
-    , mysql
+    , beam-postgres
     , serv-beam-sql
     , servant-server
     , text
@@ -76,8 +74,7 @@ test-suite serv-beam-sql-test
       aeson
     , base >=4.7 && <5
     , beam-core
-    , beam-mysql
-    , mysql
+    , beam-postgres
     , serv-beam-sql
     , servant-server
     , text

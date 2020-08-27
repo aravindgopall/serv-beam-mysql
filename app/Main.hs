@@ -13,8 +13,8 @@ module Main where
 
 import           Data.Aeson
 import           Database.Beam            as B
-import           Database.Beam.MySQL      as B
-import           Database.MySQL.Base      as B
+import           Database.Beam.Postgres      as B
+--import           Database.Postgres.Base      as B
 import           GHC.Generics
 import           Lib
 import           Network.Wai
@@ -81,29 +81,31 @@ testDb :: DatabaseSettings be TestDb
 testDb = defaultDbSettings
 
 mysqlConfig = B.ConnectInfo
-  { connectHost = "127.0.0.1"
-  , connectPort = 3306
-  , connectUser = "cloud"
-  , connectPassword  = "scape"
-  , connectDatabase  = "test"
-  , connectOptions = []
-  , connectPath  = ""
-  , connectSSL = Nothing
+  { connectHost = ""
+  , connectPort = 12401
+  , connectUser = ""
+  , connectPassword  = ""
+  , connectDatabase  = ""
+  --, connectOptions = []
+  --, connectPath  = ""
+  --, connectSSL = Nothing
   }
 
 getItemById :: Int -> Handler (Maybe Item)
 getItemById input = do
   conn <- liftIO $ connect mysqlConfig
+  liftIO $ print "connection establised"
   let predicate = \item -> itemId item ==. B.val_ input
   liftIO $
-    B.runBeamMySQL conn $
+    B.runBeamPostgresDebug print conn $
       B.runSelectReturningOne $ B.select $ B.filter_ predicate $ B.all_ (_item testDb)
 
 insertItem :: Item -> Handler String
 insertItem item = do
   conn <- liftIO $ connect mysqlConfig
+  liftIO $ print "connection establised"
   liftIO $
-    B.runBeamMySQL conn $
+    B.runBeamPostgresDebug print conn $
       B.runInsert $ B.insert (_item testDb) (B.insertExpressions (toRowExpression <$> [item]))
   return "Done"
 
